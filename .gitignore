@@ -53,6 +53,13 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+log/
+media/
+courses/migrations
+.idea/
+./idea/workspace.xml
+courses/__pycache__/
+e_learning_platform/__pycache__/
 
 # Flask stuff:
 instance/

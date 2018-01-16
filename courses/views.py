@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from courses.models import Course, Module, Content
 from courses.forms import ModuleFormSet
 from django.forms.models import modelform_factory
@@ -119,3 +120,20 @@ class ModuleContentListView(TemplateResponseMixin, View):
     def get(self, request, module_id):
         module = get_object_or_404(Module, id=module_id, course__owner=request.user)
         return self.render_to_response(context={'module': module})
+
+# the view for drag-and-drop modules and content
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id,
+                                  course__owner=request.user).update(order=order)
+        return self.render_json_response(context_dict={'saved': 'OK'})
+
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id,
+                                   module__course__owner=request.user).update(order=order)
+        return self.render_json_response(context_dict={'saved': 'OK'})

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'students',
     'courses',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,4 +130,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-LOGIN_REDIRECT_URL = reverse_lazy('courses:manage_course_list')
+LOGIN_REDIRECT_URL = reverse_lazy('students:student_course_list')

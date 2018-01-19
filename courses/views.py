@@ -11,6 +11,7 @@ from django.forms.models import modelform_factory
 from django.apps import apps
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from students.forms import CourseEnrollForm
 
 # Create your views here.
 
@@ -52,6 +53,11 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(initial={'course': self.object})
+        return context
 
 class CourseCreateView(PermissionRequiredMixin, OwnerCourseEditMixin, CreateView):
     permission_required = 'courses.add_course'

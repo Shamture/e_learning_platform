@@ -25,8 +25,9 @@ urlpatterns = [
     url(r'^$', CourseListView.as_view(), name='course_list'),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
-    url('^courses/', include('courses.urls')),
-    url('^students/', include('students.urls')),
+    url(r'^courses/', include('courses.urls')),
+    url(r'^students/', include('students.urls')),
+    url(r'^api/', include('courses.api.urls')),
     path('admin/', admin.site.urls),
 ]
 
